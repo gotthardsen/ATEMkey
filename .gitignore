@@ -1,0 +1,5 @@
+
+ATEMkey/bin/*
+ATEMkey/obj/*
+ATEMkey/BlackMagic/Interop.BMDSwitcherAPI.dll
+ATEMkey/ATEMkey.csproj.user
