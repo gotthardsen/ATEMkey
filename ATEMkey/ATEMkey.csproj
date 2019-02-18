@@ -42,6 +42,7 @@
       <HintPath>..\..\..\..\Kirken\Blackmagic ATEM Switchers SDK 7.5\Windows\Samples\SwitcherPanelCSharp\packages\Sanford.Multimedia.Midi.6.6.0\lib\net20\Sanford.Multimedia.Midi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,6 +59,11 @@
     <Compile Include="Callbacks\LockCallbackBase.cs" />
     <Compile Include="Callbacks\StillsCallback.cs" />
     <Compile Include="CommandStructs\Command.cs" />
+    <Compile Include="CommandStructs\CommandOptions.cs" />
+    <Compile Include="Configs\AppConfig.cs" />
+    <Compile Include="Configs\MapATEMMidi.cs" />
+    <Compile Include="Configs\MidiInputCollection.cs" />
+    <Compile Include="Configs\MidiInputLoader.cs" />
     <Compile Include="Controls\ATEMControl.cs" />
     <Compile Include="CommandStructs\CommandAutoTransition.cs" />
     <Compile Include="CommandStructs\CommandFader.cs" />

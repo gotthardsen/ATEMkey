@@ -3,6 +3,7 @@
     using System;
     using System.Windows.Forms;
     using ATEMkey.CommandStructs;
+    using ATEMkey.Configs;
     using ATEMkey.Controls;
     using ATEMkey.Media;
 
@@ -18,12 +19,13 @@
 
             try
             {
+                var config = new AppConfig();
                 atemControl = new ATEMControl(this);
 
-                atemControl.ConnectATEM("192.168.1.240");
-                atemControl.ConnectHyperDeck("192.168.1.241");
+                atemControl.ConnectATEM(config.ATEMip);
+                atemControl.ConnectHyperDeck(config.HyperDeckIp);
 
-                midiPad = new MidiPad(
+                midiPad = new MidiPad(config,
                     new CommandProgramInput(atemControl.m_mixEffectBlock1),
                     new CommandPreviewInput(atemControl.m_mixEffectBlock1),
                     new CommandAutoTransition(atemControl.m_mixEffectBlock1),
@@ -41,7 +43,7 @@
             }
             catch(Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show($"Unable to start: {e.Message}");
             }
         }
 

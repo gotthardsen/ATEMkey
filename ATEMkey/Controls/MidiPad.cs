@@ -5,6 +5,7 @@
     using System.Threading;
     using ATEMkey.Exceptions;
     using ATEMkey.CommandStructs;
+    using ATEMkey.Configs;
 
     public class MidiPad
     {
@@ -20,13 +21,19 @@
         private ICommand<bool> record;
         private ICommand<double> fader;
 
-        public MidiPad(ICommand<int[]> programInput, ICommand<int>previewInput, ICommand<bool> autoTrans, ICommand<bool> record, ICommand<double> fader)
+        public MidiPad(AppConfig config, ICommand<int[]> programInput, ICommand<int>previewInput, ICommand<bool> autoTrans, ICommand<bool> record, ICommand<double> fader)
         {
             this.programInput = programInput;
             this.previewInput = previewInput;
             this.autoTrans = autoTrans;
             this.record = record;
             this.fader = fader;
+            SetupKeys(config);
+        }
+
+        private void SetupKeys(AppConfig config)
+        {
+            throw new NotImplementedException();
         }
 
         public bool ConnectMidi()
