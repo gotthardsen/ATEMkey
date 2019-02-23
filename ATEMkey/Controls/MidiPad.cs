@@ -1,44 +1,41 @@
 ﻿namespace ATEMkey.Controls
 {
     using System;
-    using Sanford.Multimedia.Midi;
-    using System.Threading;
     using ATEMkey.Exceptions;
     using ATEMkey.CommandStructs;
     using ATEMkey.Configs;
+    using RtMidi.Core;
+    using System.Linq;
+    using RtMidi.Core.Devices.Infos;
+    using RtMidi.Core.Devices;
 
     public class MidiPad
     {
-        private InputDevice inDevice = null;
+        private IMidiInputDevice inDevice = null;
         private bool goingDown = false;
-        private int liveAuto = 0;
 
-        private SynchronizationContext context;
-
-        private ICommand<int[]> programInput;
-        private ICommand<int> previewInput;
+        private ICommand<MapATEMMidi> programInput;
+        private ICommand<MapATEMMidi> previewInput;
         private ICommand<bool> autoTrans;
         private ICommand<bool> record;
         private ICommand<double> fader;
+        private MapNoteList mapNote;
+        private MapControlList mapControl;
 
-        public MidiPad(AppConfig config, ICommand<int[]> programInput, ICommand<int>previewInput, ICommand<bool> autoTrans, ICommand<bool> record, ICommand<double> fader)
+        public MidiPad(MapNoteList mapNote, MapControlList mapControl, ICommand<MapATEMMidi> programInput, ICommand<MapATEMMidi> previewInput, ICommand<bool> autoTrans, ICommand<bool> record, ICommand<double> fader)
         {
             this.programInput = programInput;
             this.previewInput = previewInput;
             this.autoTrans = autoTrans;
             this.record = record;
             this.fader = fader;
-            SetupKeys(config);
-        }
-
-        private void SetupKeys(AppConfig config)
-        {
-            throw new NotImplementedException();
+            this.mapNote = mapNote;
+            this.mapControl = mapControl;
         }
 
         public bool ConnectMidi()
         {
-            if (InputDevice.DeviceCount == 0)
+            if (MidiDeviceManager.Default.InputDevices.Count() == 0)
             {
                 throw new MidiDeviceNotFound("No MIDI input devices available.");
             }
@@ -46,15 +43,13 @@
             {
                 try
                 {
-                    context = SynchronizationContext.Current;
+                    IMidiInputDeviceInfo firstDevInfo = MidiDeviceManager.Default.InputDevices.First();
 
-                    inDevice = new InputDevice(0);
-                    inDevice.ChannelMessageReceived += HandleChannelMessageReceived;
-                    //inDevice.SysCommonMessageReceived += HandleSysCommonMessageReceived;
-                    inDevice.SysExMessageReceived += HandleSysExMessageReceived;
-                    //inDevice.SysRealtimeMessageReceived += HandleSysRealtimeMessageReceived;
-                    //inDevice.Error += new EventHandler<ErrorEventArgs>(inDevice_Error);
-                    inDevice.StartRecording();
+                    inDevice = firstDevInfo.CreateDevice();
+                    inDevice.ControlChange += HandleControlChange;
+                    inDevice.NoteOn += HandleNoteOn;
+                    inDevice.SysEx += HandleSysEx;
+                    inDevice.Open();
                 }
                 catch (Exception ex)
                 {
@@ -65,80 +60,68 @@
             return true;
         }
 
+        private void HandleSysEx(IMidiInputDevice sender, in RtMidi.Core.Messages.SysExMessage msg)
+        {
+            //fader
+            double pos = msg.Data[5] / 127.0;
+            if (goingDown)
+                pos = (127 - msg.Data[5]) / 127.0;
+            fader.Execute(pos);
+            if (msg.Data[5] == 127 || msg.Data[5] == 0)
+                goingDown = !goingDown;
+        }
+
+        private void HandleNoteOn(IMidiInputDevice sender, in RtMidi.Core.Messages.NoteOnMessage msg)
+        {
+            if(msg.Velocity > 0)
+            {
+                MapATEMMidi map;
+                if (mapNote.TryGetValue(msg.Key, out map))
+                {
+                    if(map.Command == CommandOptions.Bank.ProgramInput)
+                        programInput.Execute(map);
+                    else if (map.Command == CommandOptions.Bank.PreviewInput)
+                        previewInput.Execute(map);
+                    else if (map.Command == CommandOptions.Bank.Cut)
+                        autoTrans.Execute(false);
+                    else if (map.Command == CommandOptions.Bank.AutoTrans)
+                        autoTrans.Execute(true);
+                }
+            }
+        }
+
+        private void HandleControlChange(IMidiInputDevice sender, in RtMidi.Core.Messages.ControlChangeMessage msg)
+        {
+            if (msg.Value > 0)
+            {
+                MapATEMMidi map;
+                if (mapControl.TryGetValue(msg.Control, out map))
+                {
+                    if (map.Command == CommandOptions.Bank.Record)
+                        record.Execute(true);
+                    else if (map.Command == CommandOptions.Bank.Stop)
+                        record.Execute(false);
+                    else if (map.Command == CommandOptions.Bank.LiveAuto)
+                    {
+                        if (programInput.Toggle == 0)
+                            programInput.Toggle = 1;
+                            else
+                            programInput.Toggle = 0;
+                    }
+                }
+            }
+        }
+
         public void Close()
         {
             if (inDevice != null)
             {
+                inDevice.ControlChange -= HandleControlChange;
+                inDevice.NoteOn -= HandleNoteOn;
+                inDevice.SysEx -= HandleSysEx;
                 inDevice.Close();
+                inDevice.Dispose();
             }
-        }
-
-        private void HandleChannelMessageReceived(object sender, ChannelMessageEventArgs e)
-        {
-            context.Post(delegate (object dummy)
-            {
-                if (e.Message.Command == ChannelCommand.NoteOn && e.Message.Data2 > 0)
-                {
-                    //Program
-                    if (e.Message.Data1 == 39)
-                       programInput.Execute(new int[]{ 4, liveAuto});
-                    else if (e.Message.Data1 == 48)
-                        programInput.Execute(new int[] { 5, liveAuto });
-                    else if (e.Message.Data1 == 45)
-                        programInput.Execute(new int[] { 6, liveAuto });
-                    else if (e.Message.Data1 == 43)
-                        programInput.Execute(new int[] { 7, liveAuto });
-                    else if (e.Message.Data1 == 51)
-                        programInput.Execute(new int[] { 3010, liveAuto });
-                    else if (e.Message.Data1 == 49)
-                        programInput.Execute(new int[] { 3020, liveAuto });
-                    //Preview
-                    else if (e.Message.Data1 == 36)
-                        previewInput.Execute(4);
-                    else if (e.Message.Data1 == 38)
-                        previewInput.Execute(5);
-                    else if (e.Message.Data1 == 40)
-                        previewInput.Execute(6);
-                    else if (e.Message.Data1 == 42)
-                        previewInput.Execute(7);
-                    else if (e.Message.Data1 == 44)
-                        previewInput.Execute(3010);
-                    else if (e.Message.Data1 == 46)
-                        previewInput.Execute(3020);
-                    //Cut - Auto
-                    else if (e.Message.Data1 == 1)
-                        autoTrans.Execute(false);
-                    else if (e.Message.Data1 == 2)
-                        autoTrans.Execute(true);
-                }
-                else if (e.Message.Command == ChannelCommand.Controller && e.Message.Data2 > 0)
-                {
-                    if (e.Message.Data1 == 44)
-                        record.Execute(true);
-                    else if (e.Message.Data1 == 46)
-                        record.Execute(false);
-                    else if (e.Message.Data1 == 49)
-                    {
-                        if (liveAuto == 0)
-                            liveAuto = 1;
-                        else
-                            liveAuto = 0;
-                    }
-                }
-            }, null);
-        }
-
-        private void HandleSysExMessageReceived(object sender, SysExMessageEventArgs e)
-        {
-            context.Post(delegate (object dummy)
-            {
-                double pos = e.Message[6] / 127.0;
-                if (goingDown)
-                    pos = (127 - e.Message[6]) / 127.0;
-                fader.Execute(pos);
-                if (e.Message[6] == 127 || e.Message[6] == 0)
-                    goingDown = !goingDown;
-            }, null);
         }
     }
 }

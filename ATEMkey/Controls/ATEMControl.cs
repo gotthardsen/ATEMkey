@@ -84,7 +84,8 @@
                 throw new HyperDeckNotFound("Unexpected: Could not get HyperDeck");
             else
             {
-                var ipAddress = IPAddress.Parse(hyperDeckIP);
+                string hdIp = hyperDeckIP;
+                var ipAddress = IPAddress.Parse(hdIp);
                 var ipBytes = ipAddress.GetAddressBytes();
                 var ip = (uint)ipBytes[0] << 24;
                 ip += (uint)ipBytes[1] << 16;

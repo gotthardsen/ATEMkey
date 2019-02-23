@@ -2,8 +2,7 @@
 {
     using System.Configuration;
 
-    [ConfigurationCollection(typeof(MapATEMMidi))]
-    public class MidiInputCollection : ConfigurationElementCollection
+    public class NoteInputEndpointsCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()
         {
@@ -12,12 +11,7 @@
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((MapATEMMidi)(element)).KeyValue;
-        }
-
-        public MapATEMMidi this[int idx]
-        {
-            get { return (MapATEMMidi)BaseGet(idx); }
+            return ((MapATEMMidi)element).KeyValue;
         }
     }
 }

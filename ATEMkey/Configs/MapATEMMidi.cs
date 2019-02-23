@@ -2,59 +2,72 @@
 {
     using System.Configuration;
     using ATEMkey.CommandStructs;
-    using Sanford.Multimedia.Midi;
+    using RtMidi.Core.Enums;
 
     public class MapATEMMidi : ConfigurationElement
     {
-        [ConfigurationProperty("Command", DefaultValue = CommandOptions.Bank.ProgramInput, IsRequired = false)]
+        [ConfigurationProperty("command", DefaultValue = CommandOptions.Bank.ProgramInput, IsRequired = false)]
         public CommandOptions.Bank Command
         {
             get
             {
-                return (CommandOptions.Bank)this["Command"];
+                return (CommandOptions.Bank)this["command"];
             }
             set
             {
-                this["Command"] = value;
+                this["command"] = value;
             }
         }
 
-        [ConfigurationProperty("Port", DefaultValue = CommandOptions.ATEMPort.Cam1, IsRequired = false)]
+        [ConfigurationProperty("port", DefaultValue = CommandOptions.ATEMPort.Cam1, IsRequired = false)]
         public CommandOptions.ATEMPort Port
         {
             get
             {
-                return (CommandOptions.ATEMPort)this["Port"];
+                return (CommandOptions.ATEMPort)this["port"];
             }
             set
             {
-                this["Port"] = value;
+                this["port"] = value;
             }
         }
 
-        [ConfigurationProperty("MidiCommand", DefaultValue = ChannelCommand.NoteOn, IsRequired = false)]
-        public ChannelCommand MidiCommand
+        [ConfigurationProperty("midiCommand", DefaultValue = CommandOptions.ChannelCommand.NoteOn, IsRequired = false)]
+        public CommandOptions.ChannelCommand MidiCommand
         {
             get
             {
-                return (ChannelCommand)this["MidiCommand"];
+                return (CommandOptions.ChannelCommand)this["midiCommand"];
             }
             set
             {
-                this["MidiCommand"] = value;
+                this["midiCommand"] = value;
             }
         }
 
-        [ConfigurationProperty("KeyValue", DefaultValue = -1, IsRequired = false)]
-        public int KeyValue
+        [ConfigurationProperty("keyValue", DefaultValue = Key.Key39, IsRequired = false)]
+        public Key KeyValue
         {
             get
             {
-                return (int)this["KeyValue"];
+                return (Key)this["keyValue"];
             }
             set
             {
-                this["KeyValue"] = value;
+                this["keyValue"] = value;
+            }
+        }
+
+        [ConfigurationProperty("value", DefaultValue = -1, IsRequired = false)]
+        public int Value
+        {
+            get
+            {
+                return (int)this["value"];
+            }
+            set
+            {
+                this["value"] = value;
             }
         }
     }

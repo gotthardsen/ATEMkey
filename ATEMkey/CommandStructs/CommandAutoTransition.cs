@@ -11,6 +11,7 @@
         {
             this.mixEffectBlock = mixEffectBlock;
         }
+        public int Toggle { get; set; }
 
         public void Execute(bool args)
         {

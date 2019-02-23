@@ -1,6 +1,7 @@
 ﻿namespace ATEMkey
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
     using ATEMkey.CommandStructs;
     using ATEMkey.Configs;
@@ -25,7 +26,7 @@
                 atemControl.ConnectATEM(config.ATEMip);
                 atemControl.ConnectHyperDeck(config.HyperDeckIp);
 
-                midiPad = new MidiPad(config,
+                midiPad = new MidiPad(config.ATEMNoteMap, config.ATEMControlMap,
                     new CommandProgramInput(atemControl.m_mixEffectBlock1),
                     new CommandPreviewInput(atemControl.m_mixEffectBlock1),
                     new CommandAutoTransition(atemControl.m_mixEffectBlock1),
@@ -49,7 +50,8 @@
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(atemControl != null)
+            inDevice.Close();
+            if (atemControl != null)
                 atemControl.Close();
             if(midiPad != null)
                 midiPad.Close();

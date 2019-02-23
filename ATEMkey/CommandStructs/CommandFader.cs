@@ -12,6 +12,8 @@
             this.mixEffectBlock = mixEffectBlock;
         }
 
+        public int Toggle { get; set; }
+
         public void Execute(double args)
         {
             mixEffectBlock.SetTransitionPosition(args);

@@ -12,6 +12,8 @@
             this.switcherHyperdeck = switcherHyperdeck;
         }
 
+        public int Toggle { get; set; }
+
         public void Execute(bool args)
         {
             if (args)

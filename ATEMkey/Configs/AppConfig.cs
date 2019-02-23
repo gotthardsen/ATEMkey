@@ -1,6 +1,7 @@
 ﻿namespace ATEMkey.Configs
 {
     using ATEMkey.CommandStructs;
+    using RtMidi.Core.Enums;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
@@ -37,6 +38,9 @@
             }
         }
 
+        public MapNoteList ATEMNoteMap { get; } = new MapNoteList();
+        public MapControlList ATEMControlMap { get; } = new MapControlList();
+
         private string _ATEMip = "";
         private string _HyperDeckIp = "";
 
@@ -45,8 +49,16 @@
             var appSettings = ConfigurationManager.AppSettings;
             _ATEMip = appSettings[cATEMip];
             _HyperDeckIp = appSettings[cHyperDeckIp];
-            var midiInput = ConfigurationManager.GetSection("MidiInput.ProgramInput") as MidiInputLoader;
-            //todo            
+            var midiInput = ConfigurationManager.GetSection(MidiInputSectionNote.SectionName) as MidiInputSectionNote;
+            foreach(MapATEMMidi mapATEM in midiInput.MidiInputEndpoints)
+            {
+                ATEMNoteMap.Add(mapATEM.KeyValue, mapATEM);
+            }
+            var midiInputControl = ConfigurationManager.GetSection(MidiInputSectionControl.SectionName) as MidiInputSectionControl;
+            foreach (MapATEMMidi mapATEM in midiInputControl.MidiInputEndpoints)
+            {
+                ATEMControlMap.Add(mapATEM.Value, mapATEM);
+            }
         }
 
         private void AddUpdateAppSettings(string key, string value)
