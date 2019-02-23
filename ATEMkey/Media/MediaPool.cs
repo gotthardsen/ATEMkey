@@ -1,20 +1,21 @@
 ﻿namespace ATEMkey.Media
 {
+    using ATEMkey.Controls;
     using BMDSwitcherAPI;
     using System.Collections.Generic;
 
     public class MediaPool
     {
-        private readonly IBMDSwitcher switcher;
+        private readonly IATEMControl control;
         private IBMDSwitcherMediaPool switcherMediaPool;
         private IBMDSwitcherLockCallback lockCallback;
 
         public IList<Still> list = new List<Still>();
 
-        public MediaPool(IBMDSwitcher switcher)
+        public MediaPool(IATEMControl control)
         {
-            this.switcher = switcher;
-            switcherMediaPool = (IBMDSwitcherMediaPool)this.switcher;
+            this.control = control;
+            switcherMediaPool = control.MediaPool();
 
             UpdateStills();
         }

@@ -1,18 +1,16 @@
 ﻿namespace ATEMkey.CommandStructs
 {
-    using ATEMkey.CommandStructs;
     using ATEMkey.Configs;
-    using BMDSwitcherAPI;
-    using System;
+    using ATEMkey.Controls;
 
     public class CommandProgramInput : ICommand<MapATEMMidi>
     {
-        protected IBMDSwitcherMixEffectBlock mixEffectBlock;
+        protected IATEMControl control;
         private int _LiveAuto = 0;
 
-        public CommandProgramInput(IBMDSwitcherMixEffectBlock mixEffectBlock)
+        public CommandProgramInput(IATEMControl control)
         {
-            this.mixEffectBlock = mixEffectBlock;
+            this.control = control;
         }
 
         public int Toggle { get { return _LiveAuto; } set { _LiveAuto = value; } }
@@ -21,11 +19,11 @@
         {
             if(_LiveAuto == 1)
             {
-                mixEffectBlock.SetPreviewInput((int)args.Port);
-                mixEffectBlock.PerformAutoTransition();
+                control.SetPreviewInput((int)args.Port);
+                control.PerformAutoTransition();
             }
             else
-                mixEffectBlock.SetProgramInput((int)args.Port);
+                control.SetProgramInput((int)args.Port);
         }
     }
 }

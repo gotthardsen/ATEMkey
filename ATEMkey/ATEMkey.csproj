@@ -80,6 +80,7 @@
     <Compile Include="CommandStructs\CommandPreviewInput.cs" />
     <Compile Include="CommandStructs\CommandProgramInput.cs" />
     <Compile Include="CommandStructs\CommandRecord.cs" />
+    <Compile Include="Controls\IATEMControl.cs" />
     <Compile Include="Controls\MidiPad.cs" />
     <Compile Include="Exceptions\ATEMSwitcherDiscoveryNotFound.cs" />
     <Compile Include="Exceptions\ATEMSwitcherConnectToFailure.cs" />

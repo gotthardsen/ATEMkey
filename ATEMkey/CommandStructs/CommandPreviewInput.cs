@@ -1,23 +1,22 @@
 ﻿namespace ATEMkey.CommandStructs
 {
-    using ATEMkey.CommandStructs;
     using ATEMkey.Configs;
-    using BMDSwitcherAPI;
+    using ATEMkey.Controls;
 
     public class CommandPreviewInput : ICommand<MapATEMMidi>
     {
-        protected IBMDSwitcherMixEffectBlock mixEffectBlock;
+        protected IATEMControl control;
 
-        public CommandPreviewInput(IBMDSwitcherMixEffectBlock mixEffectBlock)
+        public CommandPreviewInput(IATEMControl control)
         {
-            this.mixEffectBlock = mixEffectBlock;
+            this.control = control;
         }
 
         public int Toggle { get; set; }
 
         public void Execute(MapATEMMidi args)
         {
-            mixEffectBlock.SetPreviewInput((int)args.Port);
+            control.SetPreviewInput((int)args.Port);
         }
     }
 }

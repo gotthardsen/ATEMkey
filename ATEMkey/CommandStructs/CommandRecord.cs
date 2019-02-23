@@ -1,15 +1,15 @@
-﻿namespace ATEMkey.CommandStructs
+﻿using ATEMkey.Controls;
+
+namespace ATEMkey.CommandStructs
 {
-    using ATEMkey.CommandStructs;
-    using BMDSwitcherAPI;
 
     public class CommandRecord : ICommand<bool>
     {
-        protected IBMDSwitcherHyperDeck switcherHyperdeck;
+        protected IATEMControl control;
 
-        public CommandRecord(IBMDSwitcherHyperDeck switcherHyperdeck)
+        public CommandRecord(IATEMControl control)
         {
-            this.switcherHyperdeck = switcherHyperdeck;
+            this.control = control;
         }
 
         public int Toggle { get; set; }
@@ -17,9 +17,9 @@
         public void Execute(bool args)
         {
             if (args)
-                switcherHyperdeck.Record();
+                control.Record();
             else
-                switcherHyperdeck.Stop();
+                control.Stop();
         }
     }
 }

@@ -1,24 +1,23 @@
 ﻿namespace ATEMkey.CommandStructs
 {
-    using ATEMkey.CommandStructs;
-    using BMDSwitcherAPI;
+    using ATEMkey.Controls;
 
     public class CommandAutoTransition : ICommand<bool>
     {
-        protected IBMDSwitcherMixEffectBlock mixEffectBlock;
+        protected IATEMControl control;
 
-        public CommandAutoTransition(IBMDSwitcherMixEffectBlock mixEffectBlock)
+        public CommandAutoTransition(IATEMControl control)
         {
-            this.mixEffectBlock = mixEffectBlock;
+            this.control = control;
         }
         public int Toggle { get; set; }
 
         public void Execute(bool args)
         {
             if (args)
-                mixEffectBlock.PerformAutoTransition();
+                control.PerformAutoTransition();
             else
-                mixEffectBlock.PerformCut();
+                control.PerformCut();
         }
     }
 }

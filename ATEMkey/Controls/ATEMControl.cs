@@ -7,25 +7,26 @@
     using System;
     using System.Net;
     using System.Runtime.InteropServices;
+    using System.Threading;
     using System.Windows.Forms;
 
-    public class ATEMControl
+    public class ATEMControl : IATEMControl
     {
         private const int SysExBufferSize = 128;
 
-        public IBMDSwitcherMixEffectBlock m_mixEffectBlock1 = null;
-        public IBMDSwitcherHyperDeck switcherHyperdeck = null;
+        private IBMDSwitcherMixEffectBlock m_mixEffectBlock1 = null;
+        private IBMDSwitcherHyperDeck switcherHyperdeck = null;
         public IBMDSwitcher m_switcher;
 
         private IBMDSwitcherDiscovery m_switcherDiscovery;
         private SwitcherMonitor m_switcherMonitor;
-
-        private IBMDSwitcherMediaPool switcherMediaPool;
-
+        private SynchronizationContext context;
         private Form mainForm;
 
         public ATEMControl(Form mainForm)
         {
+            context = SynchronizationContext.Current;
+
             this.mainForm = mainForm;
         }
 
@@ -145,9 +146,65 @@
             return true;
         }
 
-        private void MediaPool()
+        public IBMDSwitcherMediaPool MediaPool()
         {
-            switcherMediaPool = (IBMDSwitcherMediaPool)this.m_switcher;
+            return (IBMDSwitcherMediaPool)this.m_switcher;
+        }
+
+        public void SetProgramInput(int port)
+        {
+            context.Post(delegate (object dummy)
+            {
+                m_mixEffectBlock1.SetProgramInput((long)port);
+            }, null);        
+        }
+
+        public void SetPreviewInput(int port)
+        {
+            context.Post(delegate (object dummy)
+            {
+                m_mixEffectBlock1.SetPreviewInput(port);
+            }, null);
+        }
+
+        public void PerformAutoTransition()
+        {
+            context.Post(delegate (object dummy)
+            {
+                m_mixEffectBlock1.PerformAutoTransition();
+            }, null);
+        }
+
+        public void PerformCut()
+        {
+            context.Post(delegate (object dummy)
+            {
+                m_mixEffectBlock1.PerformCut();
+            }, null);
+        }
+
+        public void Record()
+        {
+            context.Post(delegate (object dummy)
+            {
+                switcherHyperdeck.Record();
+            }, null);
+        }
+
+        public void Stop()
+        {
+            context.Post(delegate (object dummy)
+            {
+                switcherHyperdeck.Stop();
+            }, null);
+        }
+
+        public void SetTransitionPosition(double pos)
+        {
+            context.Post(delegate (object dummy)
+            {
+                m_mixEffectBlock1.SetTransitionPosition(pos);
+            }, null);
         }
     }
 }

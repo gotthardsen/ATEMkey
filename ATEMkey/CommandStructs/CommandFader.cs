@@ -1,22 +1,21 @@
 ﻿namespace ATEMkey.CommandStructs
 {
-    using ATEMkey.CommandStructs;
-    using BMDSwitcherAPI;
+    using ATEMkey.Controls;
 
     public class CommandFader : ICommand<double>
     {
-        protected IBMDSwitcherMixEffectBlock mixEffectBlock;
+        protected IATEMControl control;
 
-        public CommandFader(IBMDSwitcherMixEffectBlock mixEffectBlock)
+        public CommandFader(IATEMControl control)
         {
-            this.mixEffectBlock = mixEffectBlock;
+            this.control = control;
         }
 
         public int Toggle { get; set; }
 
         public void Execute(double args)
         {
-            mixEffectBlock.SetTransitionPosition(args);
+            control.SetTransitionPosition(args);
         }
     }
 }

@@ -27,15 +27,15 @@
                 atemControl.ConnectHyperDeck(config.HyperDeckIp);
 
                 midiPad = new MidiPad(config.ATEMNoteMap, config.ATEMControlMap,
-                    new CommandProgramInput(atemControl.m_mixEffectBlock1),
-                    new CommandPreviewInput(atemControl.m_mixEffectBlock1),
-                    new CommandAutoTransition(atemControl.m_mixEffectBlock1),
-                    new CommandRecord(atemControl.switcherHyperdeck),
-                    new CommandFader(atemControl.m_mixEffectBlock1));
+                    new CommandProgramInput(atemControl),
+                    new CommandPreviewInput(atemControl),
+                    new CommandAutoTransition(atemControl),
+                    new CommandRecord(atemControl),
+                    new CommandFader(atemControl));
 
                 midiPad.ConnectMidi();
 
-                mediaPool = new MediaPool(atemControl.m_switcher);
+                mediaPool = new MediaPool(atemControl);
 
                 foreach (Still still in mediaPool.list)
                 {
