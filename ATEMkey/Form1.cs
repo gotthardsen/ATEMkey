@@ -50,7 +50,6 @@
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            inDevice.Close();
             if (atemControl != null)
                 atemControl.Close();
             if(midiPad != null)
