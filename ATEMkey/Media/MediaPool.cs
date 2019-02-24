@@ -3,20 +3,21 @@
     using ATEMkey.Controls;
     using BMDSwitcherAPI;
     using System.Collections.Generic;
+    using System.Threading;
 
     public class MediaPool
     {
         private readonly IATEMControl control;
-        private IBMDSwitcherMediaPool switcherMediaPool;
-        private IBMDSwitcherLockCallback lockCallback;
+        public IBMDSwitcherMediaPool switcherMediaPool;
 
         public IList<Still> list = new List<Still>();
+        private Upload upl;
 
         public MediaPool(IATEMControl control)
         {
             this.control = control;
             switcherMediaPool = control.MediaPool();
-
+            upl = new Upload(this);
             UpdateStills();
         }
 
@@ -41,11 +42,25 @@
             
         }
 
+        public void Upload(string filename, uint index)
+        {
+            upl.Execute(filename, index);
+        }
+
         public IBMDSwitcherStills GetStills()
         {
             IBMDSwitcherStills stills;
             switcherMediaPool.GetStills(out stills);
             return stills;
+        }
+
+        public uint VideoHeight()
+        {
+            return control.VideoHeight();
+        }
+        public uint VideoWidth()
+        {
+            return control.VideoWidth();
         }
     }
 }

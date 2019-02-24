@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.uploadBut = new System.Windows.Forms.Button();
+            this.updateBut = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -49,6 +52,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(816, 93);
             this.panel1.TabIndex = 0;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(13, 13);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(67, 17);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "Auto Cut";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -74,6 +87,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.updateBut);
+            this.tabPage2.Controls.Add(this.uploadBut);
             this.tabPage2.Controls.Add(this.listBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -83,16 +98,6 @@
             this.tabPage2.Text = "Media";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(13, 13);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(67, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Auto Cut";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
@@ -100,6 +105,30 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(245, 316);
             this.listBox1.TabIndex = 0;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // uploadBut
+            // 
+            this.uploadBut.Location = new System.Drawing.Point(275, 6);
+            this.uploadBut.Name = "uploadBut";
+            this.uploadBut.Size = new System.Drawing.Size(75, 23);
+            this.uploadBut.TabIndex = 1;
+            this.uploadBut.Text = "Upload";
+            this.uploadBut.UseVisualStyleBackColor = true;
+            this.uploadBut.Click += new System.EventHandler(this.uploadBut_Click);
+            // 
+            // updateBut
+            // 
+            this.updateBut.Location = new System.Drawing.Point(275, 46);
+            this.updateBut.Name = "updateBut";
+            this.updateBut.Size = new System.Drawing.Size(75, 23);
+            this.updateBut.TabIndex = 2;
+            this.updateBut.Text = "Update";
+            this.updateBut.UseVisualStyleBackColor = true;
+            this.updateBut.Click += new System.EventHandler(this.updateBut_Click);
             // 
             // Form1
             // 
@@ -128,6 +157,9 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button uploadBut;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button updateBut;
     }
 }
 

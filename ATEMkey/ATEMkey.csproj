@@ -84,7 +84,9 @@
     <Compile Include="Controls\MidiPad.cs" />
     <Compile Include="Exceptions\ATEMSwitcherDiscoveryNotFound.cs" />
     <Compile Include="Exceptions\ATEMSwitcherConnectToFailure.cs" />
+    <Compile Include="Exceptions\ATEMSwitcherImageException.cs" />
     <Compile Include="Exceptions\ATEMSwitcherMissingMixerBlock.cs" />
+    <Compile Include="Exceptions\ATEMSwitcherUnsupportedRes.cs" />
     <Compile Include="Exceptions\HyperDeckNotFound.cs" />
     <Compile Include="Exceptions\MidiDeviceNotFound.cs" />
     <Compile Include="Exceptions\MidiDeviceSetupException.cs" />

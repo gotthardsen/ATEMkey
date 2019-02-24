@@ -37,14 +37,21 @@
 
                 mediaPool = new MediaPool(atemControl);
 
-                foreach (Still still in mediaPool.list)
-                {
-                    listBox1.Items.Add(still.name);
-                }
+                UpdateImages();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show($"Unable to start: {e.Message}");
+            }
+        }
+
+        private void UpdateImages()
+        {
+            listBox1.Items.Clear();
+            foreach (Still still in mediaPool.list)
+            {
+                if (!String.IsNullOrEmpty(still.name))
+                    listBox1.Items.Add(still.name);
             }
         }
 
@@ -54,6 +61,20 @@
                 atemControl.Close();
             if(midiPad != null)
                 midiPad.Close();
+        }
+
+        private void uploadBut_Click(object sender, EventArgs e)
+        {
+            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                mediaPool.Upload(openFileDialog1.FileName, (uint)listBox1.Items.Count);
+                UpdateImages();
+            }
+        }
+
+        private void updateBut_Click(object sender, EventArgs e)
+        {
+            UpdateImages();
         }
     }
 }

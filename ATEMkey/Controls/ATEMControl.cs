@@ -206,5 +206,59 @@
                 m_mixEffectBlock1.SetTransitionPosition(pos);
             }, null);
         }
+
+        public uint VideoHeight()
+        {
+            _BMDSwitcherVideoMode videoMode;
+            m_switcher.GetVideoMode(out videoMode);
+            switch (videoMode)
+            {
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode4KHDp2398:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode4KHDp24:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode4KHDp25:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode4KHDp2997:
+                    return 2160;
+
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode720p50:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode720p5994:
+                    return 720;
+
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080i50:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080i5994:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p50:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p2398:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p24:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p25:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p2997:
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode1080p5994:
+                    return 1080;
+
+                case _BMDSwitcherVideoMode.bmdSwitcherVideoMode525i5994NTSC:
+                    return 480;
+                default:
+                    throw new ATEMSwitcherUnsupportedRes(String.Format("Unsupported resolution: {0}", videoMode.ToString()));
+            }
+        }
+
+        public uint VideoWidth()
+        {
+            uint videoHeight = this.VideoHeight();
+            switch (videoHeight)
+            {
+                case 720:
+                    return 1280;
+
+                case 1080:
+                    return 1920;
+
+                case 2160:
+                    return 3840;
+
+                case 480:
+                    return 720;
+                default:
+                    throw new ATEMSwitcherUnsupportedRes(String.Format("Unsupported video height: {0}", videoHeight.ToString()));
+            }
+        }
     }
 }

@@ -12,5 +12,7 @@
         void Stop();
         void SetTransitionPosition(double pos);
         IBMDSwitcherMediaPool MediaPool();
+        uint VideoHeight();
+        uint VideoWidth();
     }
 }
