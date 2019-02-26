@@ -2,6 +2,7 @@
 {
     using ATEMkey.Controls;
     using BMDSwitcherAPI;
+    using System;
     using System.Collections.Generic;
     using System.Threading;
 
@@ -61,6 +62,18 @@
         public uint VideoWidth()
         {
             return control.VideoWidth();
+        }
+
+        public int GetSlot(string selectedValue)
+        {
+            foreach(var still in list)
+            {
+                if(still.name == selectedValue)
+                {
+                    return still.index;
+                }
+            }
+            return -1;
         }
     }
 }

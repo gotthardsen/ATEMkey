@@ -1,5 +1,6 @@
 ﻿namespace ATEMkey.Controls
 {
+    using ATEMkey.CommandStructs;
     using BMDSwitcherAPI;
 
     public interface IATEMControl
@@ -14,5 +15,6 @@
         IBMDSwitcherMediaPool MediaPool();
         uint VideoHeight();
         uint VideoWidth();
+        void ChangeMediaPlayer(CommandOptions.ATEMPort port, uint slot);
     }
 }

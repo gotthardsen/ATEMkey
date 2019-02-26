@@ -23,6 +23,9 @@
         private SynchronizationContext context;
         private Form mainForm;
 
+        private IBMDSwitcherMediaPlayer mediaPlayer1;
+        private IBMDSwitcherMediaPlayer mediaPlayer2;
+
         public ATEMControl(Form mainForm)
         {
             context = SynchronizationContext.Current;
@@ -67,6 +70,8 @@
             // invoke on the Windows Forms object. The lambda expression is just a simplification.
             m_switcherMonitor.SwitcherDisconnected += new SwitcherEventHandler((s, a) => mainForm.Invoke((Action)(() => SwitcherDisconnected())));
 
+            GetMediaPlayer();
+
             return SetMixBlock();
         }
 
@@ -96,6 +101,23 @@
             }
 
             return true;
+        }
+
+        private void GetMediaPlayer()
+        {
+            Guid mediaPlayerID = typeof(IBMDSwitcherMediaPlayerIterator).GUID;
+            IntPtr mediaPlayerPtr;
+            m_switcher.CreateIterator(ref mediaPlayerID, out mediaPlayerPtr);
+            IBMDSwitcherMediaPlayerIterator mediaPlayerIterator = null;
+            if (mediaPlayerPtr == null)
+                return;
+            mediaPlayerIterator = (IBMDSwitcherMediaPlayerIterator)Marshal.GetObjectForIUnknown(mediaPlayerPtr);
+            mediaPlayerIterator.Next(out mediaPlayer1);
+            if (mediaPlayer1 == null)
+                return;
+            mediaPlayerIterator.Next(out mediaPlayer2);
+            if (mediaPlayer2 == null)
+                return;
         }
 
         private void SwitcherDisconnected()
@@ -259,6 +281,15 @@
                 default:
                     throw new ATEMSwitcherUnsupportedRes(String.Format("Unsupported video height: {0}", videoHeight.ToString()));
             }
+        }
+
+        public void ChangeMediaPlayer(CommandOptions.ATEMPort port, uint slot)
+        {
+            if(port == CommandOptions.ATEMPort.Mp1)
+                mediaPlayer1.SetSource(_BMDSwitcherMediaPlayerSourceType.bmdSwitcherMediaPlayerSourceTypeStill, slot);
+            else
+                mediaPlayer2.SetSource(_BMDSwitcherMediaPlayerSourceType.bmdSwitcherMediaPlayerSourceTypeStill, slot);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace ATEMkey
 {
     using System;
+    using System.Drawing;
     using System.Linq;
     using System.Windows.Forms;
     using ATEMkey.CommandStructs;
@@ -75,6 +76,34 @@
         private void updateBut_Click(object sender, EventArgs e)
         {
             UpdateImages();
+        }
+
+        private void butMP1_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+                return;
+            var idx = mediaPool.GetSlot(listBox1.Items[listBox1.SelectedIndex].ToString()) - 1;
+            if (idx > -1)
+                atemControl.ChangeMediaPlayer(CommandOptions.ATEMPort.Mp1, (uint)idx);
+        }
+
+        private void butMP2_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+                return;
+            var idx = mediaPool.GetSlot(listBox1.Items[listBox1.SelectedIndex].ToString()) - 1;
+            if (idx > -1)
+                atemControl.ChangeMediaPlayer(CommandOptions.ATEMPort.Mp2, (uint)idx);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            /*if (listBox1.SelectedIndex == -1)
+                return;
+            Bitmap MyImage = new Bitmap("C:\\Private\\GitHub\\Gotthardsen\\ATEMkey\\ATEMkey\\bin\\Debug\\Images\\" + listBox1.SelectedItem.ToString()+".jpg");
+            //pictureBox1.ClientSize = new Size(xSize, ySize);
+            pictureBox1.Image = (Image)MyImage;
+            */
         }
     }
 }

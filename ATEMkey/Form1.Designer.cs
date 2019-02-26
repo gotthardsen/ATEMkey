@@ -33,13 +33,17 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.updateBut = new System.Windows.Forms.Button();
+            this.uploadBut = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.uploadBut = new System.Windows.Forms.Button();
-            this.updateBut = new System.Windows.Forms.Button();
+            this.butMP1 = new System.Windows.Forms.Button();
+            this.butMP2 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -87,6 +91,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.pictureBox1);
+            this.tabPage2.Controls.Add(this.butMP2);
+            this.tabPage2.Controls.Add(this.butMP1);
             this.tabPage2.Controls.Add(this.updateBut);
             this.tabPage2.Controls.Add(this.uploadBut);
             this.tabPage2.Controls.Add(this.listBox1);
@@ -98,17 +105,15 @@
             this.tabPage2.Text = "Media";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // listBox1
+            // updateBut
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 6);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(245, 316);
-            this.listBox1.TabIndex = 0;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.updateBut.Location = new System.Drawing.Point(275, 46);
+            this.updateBut.Name = "updateBut";
+            this.updateBut.Size = new System.Drawing.Size(75, 23);
+            this.updateBut.TabIndex = 2;
+            this.updateBut.Text = "Update";
+            this.updateBut.UseVisualStyleBackColor = true;
+            this.updateBut.Click += new System.EventHandler(this.updateBut_Click);
             // 
             // uploadBut
             // 
@@ -120,15 +125,46 @@
             this.uploadBut.UseVisualStyleBackColor = true;
             this.uploadBut.Click += new System.EventHandler(this.uploadBut_Click);
             // 
-            // updateBut
+            // listBox1
             // 
-            this.updateBut.Location = new System.Drawing.Point(275, 46);
-            this.updateBut.Name = "updateBut";
-            this.updateBut.Size = new System.Drawing.Size(75, 23);
-            this.updateBut.TabIndex = 2;
-            this.updateBut.Text = "Update";
-            this.updateBut.UseVisualStyleBackColor = true;
-            this.updateBut.Click += new System.EventHandler(this.updateBut_Click);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(6, 6);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(245, 316);
+            this.listBox1.TabIndex = 0;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // butMP1
+            // 
+            this.butMP1.Location = new System.Drawing.Point(275, 87);
+            this.butMP1.Name = "butMP1";
+            this.butMP1.Size = new System.Drawing.Size(75, 23);
+            this.butMP1.TabIndex = 3;
+            this.butMP1.Text = "MP1";
+            this.butMP1.UseVisualStyleBackColor = true;
+            this.butMP1.Click += new System.EventHandler(this.butMP1_Click);
+            // 
+            // butMP2
+            // 
+            this.butMP2.Location = new System.Drawing.Point(368, 87);
+            this.butMP2.Name = "butMP2";
+            this.butMP2.Size = new System.Drawing.Size(75, 23);
+            this.butMP2.TabIndex = 4;
+            this.butMP2.Text = "MP2";
+            this.butMP2.UseVisualStyleBackColor = true;
+            this.butMP2.Click += new System.EventHandler(this.butMP2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(275, 131);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(304, 178);
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -144,6 +180,7 @@
             this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,6 +197,9 @@
         private System.Windows.Forms.Button uploadBut;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button updateBut;
+        private System.Windows.Forms.Button butMP2;
+        private System.Windows.Forms.Button butMP1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
